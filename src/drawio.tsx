@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import BrowserOnly from '@docusaurus/BrowserOnly'
-import React, { FC, memo, useEffect, useRef, useState } from 'react'
+import React, { FC, memo, useEffect, useRef } from 'react'
 import './index.css'
 
 interface DrawioProps {
@@ -79,54 +79,57 @@ const Drawio: FC<DrawioProps> = ({
   toolbarPosition,
   toolbarNohide,
   toolbarButtons,
+  title,
   ...restConfig
 }) => {
-  const [tip, setTip] = useState('loading...')
-  const el = useRef<HTMLDivElement>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const GraphViewer = (window as any).GraphViewer
-  useEffect(() => {
-    if (!GraphViewer) {
-      setTip('GraphViewer is not loaded')
-      return
-    }
+  if (!(window as any).elCache) {
+    (window as any).elCache = {}
+  }
+  if (!(window as any).elCache[title] || !(window as any).elCache[title].current) {
+    const el = useRef<HTMLDivElement>(null)
+    const GraphViewer = (window as any).GraphViewer
+    useEffect(() => {
+      if (!GraphViewer) {
+        console.error('GraphViewer is not loaded')
+        return
+      }
 
-    if (!content) {
-      setTip('drawio file is empty')
-      return
-    }
+      if (!content) {
+        console.error('drawio file is empty')
+        return
+      }
 
-    const data = {
-      editable: '_blank',
-      highlight: '#0000ff',
-      nav: true,
-      resize: true,
-      toolbar: 'zoom lightbox',
-      xml: content,
-      'max-height': maxHeight,
-      'auto-fit': autoFit,
-      'auto-crop': autoCrop,
-      'auto-origin': autoOrigin,
-      'allow-zoom-out': allowZoomOut,
-      'allow-zoom-in': allowZoomIn,
-      'check-visible-state': checkVisibleState,
-      'toolbar-position': toolbarPosition,
-      'toolbar-nohide': toolbarNohide,
-      'toolbar-buttons': toolbarButtons,
-      ...restConfig,
-    }
+      const data = {
+        editable: '_blank',
+        highlight: '#0000ff',
+        nav: true,
+        resize: true,
+        toolbar: 'zoom lightbox',
+        xml: content,
+        'max-height': maxHeight,
+        'auto-fit': autoFit,
+        'auto-crop': autoCrop,
+        'auto-origin': autoOrigin,
+        'allow-zoom-out': allowZoomOut,
+        'allow-zoom-in': allowZoomIn,
+        'check-visible-state': checkVisibleState,
+        'toolbar-position': toolbarPosition,
+        'toolbar-nohide': toolbarNohide,
+        'toolbar-buttons': toolbarButtons,
+        ...restConfig,
+      }
 
-    const json = JSON.stringify(data)
-    el.current!.dataset.mxgraph = json
-    setTip('')
-    setTimeout(() => {
-      GraphViewer.createViewerForElement(el.current!)
-    }, 0)
-  }, [])
+      const json = JSON.stringify(data)
+      el.current!.dataset.mxgraph = json
+      setTimeout(() => {
+        GraphViewer.createViewerForElement(el.current!)
+      }, 0)
+    }, []);
+    (window as any).elCache[title] = el
+  }
   return (
     <div className="docusaurus-plugin-drawio">
-      <div className="docusaurus-plugin-drawio__content" ref={el}>
-        {tip}
+      <div className="docusaurus-plugin-drawio__content" ref={(window as any).elCache[title]}>
       </div>
     </div>
   )
