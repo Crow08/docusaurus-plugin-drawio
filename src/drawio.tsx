@@ -79,57 +79,50 @@ const Drawio: FC<DrawioProps> = ({
   toolbarPosition,
   toolbarNohide,
   toolbarButtons,
-  title,
   ...restConfig
 }) => {
-  if (!(window as any).elCache) {
-    (window as any).elCache = {}
-  }
-  if (!(window as any).elCache[title] || !(window as any).elCache[title].current) {
-    const el = useRef<HTMLDivElement>(null)
-    const GraphViewer = (window as any).GraphViewer
-    useEffect(() => {
-      if (!GraphViewer) {
-        console.error('GraphViewer is not loaded')
-        return
-      }
+  const el = useRef<HTMLDivElement>(null)
+  const GraphViewer = (window as any).GraphViewer
+  useEffect(() => {
+    if (!GraphViewer) {
+      console.error('GraphViewer is not loaded')
+      return
+    }
 
-      if (!content) {
-        console.error('drawio file is empty')
-        return
-      }
+    if (!content) {
+      console.error('drawio file is empty')
+      return
+    }
 
-      const data = {
-        editable: '_blank',
-        highlight: '#0000ff',
-        nav: true,
-        resize: true,
-        toolbar: 'zoom lightbox',
-        xml: content,
-        'max-height': maxHeight,
-        'auto-fit': autoFit,
-        'auto-crop': autoCrop,
-        'auto-origin': autoOrigin,
-        'allow-zoom-out': allowZoomOut,
-        'allow-zoom-in': allowZoomIn,
-        'check-visible-state': checkVisibleState,
-        'toolbar-position': toolbarPosition,
-        'toolbar-nohide': toolbarNohide,
-        'toolbar-buttons': toolbarButtons,
-        ...restConfig,
-      }
+    const data = {
+      editable: '_blank',
+      highlight: '#0000ff',
+      nav: true,
+      resize: true,
+      toolbar: 'zoom lightbox',
+      xml: content,
+      'max-height': maxHeight,
+      'auto-fit': autoFit,
+      'auto-crop': autoCrop,
+      'auto-origin': autoOrigin,
+      'allow-zoom-out': allowZoomOut,
+      'allow-zoom-in': allowZoomIn,
+      'check-visible-state': checkVisibleState,
+      'toolbar-position': toolbarPosition,
+      'toolbar-nohide': toolbarNohide,
+      'toolbar-buttons': toolbarButtons,
+      ...restConfig,
+    }
 
-      const json = JSON.stringify(data)
-      el.current!.dataset.mxgraph = json
-      setTimeout(() => {
-        GraphViewer.createViewerForElement(el.current!)
-      }, 0)
-    }, []);
-    (window as any).elCache[title] = el
-  }
+    const json = JSON.stringify(data)
+    el.current!.dataset.mxgraph = json
+    setTimeout(() => {
+      GraphViewer.createViewerForElement(el.current!)
+    }, 0)
+  }, []);
   return (
     <div className="docusaurus-plugin-drawio">
-      <div className="docusaurus-plugin-drawio__content" ref={(window as any).elCache[title]}>
+      <div className="docusaurus-plugin-drawio__content" ref={el}>
       </div>
     </div>
   )
