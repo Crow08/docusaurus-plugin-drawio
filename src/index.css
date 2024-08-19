@@ -7,8 +7,15 @@
 }
 
 html[data-theme='dark'] .docusaurus-plugin-drawio {
-  background-color: #333;
+  background-color: #242526;
   color: #fff;
+}
+body > div:nth-child(3) {
+  background: var(--ifm-background-surface-color) !important;
+}
+
+body > div:nth-child(3) > div {
+  top: initial !important;
 }
 
 .docusaurus-plugin-drawio > div {

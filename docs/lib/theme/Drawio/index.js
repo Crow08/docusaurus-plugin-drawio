@@ -73,7 +73,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".docusaurus-plugin-drawio {\r\n  width: 100%;\r\n  padding: 10px;\r\n  border: 1px solid #ccc;\r\n  text-align: center;\r\n  overflow-x: auto;\r\n}\r\n\r\nhtml[data-theme='dark'] .docusaurus-plugin-drawio {\r\n  background-color: #333;\r\n  color: #fff;\r\n}\r\n\r\n.docusaurus-plugin-drawio > div {\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  border: 1px solid transparent;\r\n  min-width: 180px;\r\n}\r\n";
+var css_248z = ".docusaurus-plugin-drawio {\n  width: 100%;\n  padding: 10px;\n  border: 1px solid #ccc;\n  text-align: center;\n  overflow-x: auto;\n}\n\nhtml[data-theme='dark'] .docusaurus-plugin-drawio {\n  background-color: #242526;\n  color: #fff;\n}\nbody > div:nth-child(3) {\n  background: var(--ifm-background-surface-color) !important;\n}\n\nbody > div:nth-child(3) > div {\n  top: initial !important;\n}\n\n.docusaurus-plugin-drawio > div {\n  margin-left: auto;\n  margin-right: auto;\n  border: 1px solid transparent;\n  min-width: 180px;\n}\n";
 styleInject(css_248z);
 
 var Drawio = function (_a) {
