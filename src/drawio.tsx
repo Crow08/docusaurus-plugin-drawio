@@ -116,9 +116,9 @@ const Drawio: FC<DrawioProps> = ({
 
     const json = JSON.stringify(data)
     el.current!.dataset.mxgraph = json
-    setTimeout(() => {
-      GraphViewer.createViewerForElement(el.current!)
-    }, 0)
+    requestIdleCallback(() => {
+      GraphViewer.createViewerForElement(el.current)
+    })
   }, []);
   return (
     <div className="docusaurus-plugin-drawio">
